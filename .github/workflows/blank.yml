@@ -1,25 +1,30 @@
-
 name: Build and Deploy
 
 on:
   push:
     tags:
-      - '*'
+      - '*'  # Triggers the workflow for any tag push
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    
     - name: Build Application
       run: |
         # Add the commands to build your application
         # For example: ./gradlew build
+        echo "Building the application..."  # Placeholder for build command
+    
     - name: Package Application
       run: |
         # Add the commands to package the application
         # For example: tar -czf app.tar.gz build/
+        echo "Packaging the application..."  # Placeholder for package command
+        tar -czf app.tar.gz build/  # Assuming the build artifacts are in the 'build/' directory
+    
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
@@ -34,6 +39,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: application
+    
     - name: Deploy to Repository
       env:
         TARGET_REPO: ${{ secrets.TARGET_REPO }}
@@ -41,9 +47,11 @@ jobs:
       run: |
         # Add the commands to upload the packaged application
         # For example:
-        git clone https://${{ secrets.TARGET_REPO_TOKEN }}@github.com/$TARGET_REPO.git
-        mv app.tar.gz $TARGET_REPO/
-        cd $TARGET_REPO
+        echo "Deploying the application..."
+        git clone https://${{ secrets.TARGET_REPO_TOKEN }}@github.com/${{ secrets.TARGET_REPO }}.git target-repo
+        mv app.tar.gz target-repo/
+        cd target-repo
         git add app.tar.gz
         git commit -m "Add new build"
         git push
+
