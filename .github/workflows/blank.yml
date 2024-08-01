@@ -14,16 +14,28 @@ jobs:
     
     - name: Build Application
       run: |
-        # Add the commands to build your application
-        # For example: ./gradlew build
-        echo "Building the application..."  # Placeholder for build command
+        # Replace with the actual build command
+        echo "Building the application..."
+        # Example build command:
+        # ./gradlew build
+        # Make sure it creates the 'build/' directory or adjust the path accordingly
+    
+    - name: Check Build Directory
+      run: |
+        # Debugging step to check the contents of the directory
+        echo "Checking build directory..."
+        ls -la
     
     - name: Package Application
       run: |
-        # Add the commands to package the application
-        # For example: tar -czf app.tar.gz build/
-        echo "Packaging the application..."  # Placeholder for package command
-        tar -czf app.tar.gz build/  # Assuming the build artifacts are in the 'build/' directory
+        # Ensure the build directory exists before packaging
+        echo "Packaging the application..."
+        if [ -d "build" ]; then
+          tar -czf app.tar.gz build/
+        else
+          echo "Error: Build directory 'build/' does not exist"
+          exit 1
+        fi
     
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
