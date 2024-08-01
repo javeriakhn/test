@@ -1,0 +1,49 @@
+
+name: Build and Deploy
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Application
+      run: |
+        # Add the commands to build your application
+        # For example: ./gradlew build
+    - name: Package Application
+      run: |
+        # Add the commands to package the application
+        # For example: tar -czf app.tar.gz build/
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: application
+        path: app.tar.gz
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: application
+    - name: Deploy to Repository
+      env:
+        TARGET_REPO: ${{ secrets.TARGET_REPO }}
+        TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+      run: |
+        # Add the commands to upload the packaged application
+        # For example:
+        git clone https://${{ secrets.TARGET_REPO_TOKEN }}@github.com/$TARGET_REPO.git
+        mv app.tar.gz $TARGET_REPO/
+        cd $TARGET_REPO
+        git add app.tar.gz
+        git commit -m "Add new build"
+        git push
