@@ -3,13 +3,13 @@
     "description": "A brief description of your project",
     "type": "project",
     "require": {
-        "php": ">=7.4",  // PHP version requirement
-        "monolog/monolog": "^2.0",  // Example of a package dependency
-        "guzzlehttp/guzzle": "^7.0"  // Another example of a package dependency
+        "php": ">=7.4",  
+        "monolog/monolog": "^2.0",  
+        "guzzlehttp/guzzle": "^7.0"  
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"  // Adjust namespace and directory as needed
+            "App\\": "src/"  
         }
     },
     "scripts": {
@@ -21,9 +21,9 @@
         ]
     },
     "config": {
-        "optimize-autoloader": true,  // Optimize autoloader for production
-        "preferred-install": "dist"   // Prefer distribution packages for faster installation
+        "optimize-autoloader": true,  
+        "preferred-install": "dist"   
     },
-    "minimum-stability": "stable",  // Minimum stability level for packages
-    "prefer-stable": true           // Prefer stable versions of packages
+    "minimum-stability": "stable",  
+    "prefer-stable": true           
 }
