@@ -10,23 +10,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2  # Check out the repository code
+    - uses: actions/checkout@v2
     
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '11'  # Set the Java version to match your project requirements
-        distribution: 'temurin'  # Use 'temurin' instead of 'adoptopenjdk'
+        java-version: '11'
+        distribution: 'temurin'
     
     - name: Build Application
       run: |
         echo "Building the application with Maven..."
-        mvn clean package  # Run Maven to build and package the application
+        mvn clean package
     
     - name: Check Build Directory
       run: |
         echo "Listing contents of the build directory..."
-        ls -la target  # The default output directory for Maven builds
+        ls -la target
     
     - name: Package Application
       run: |
@@ -52,6 +52,11 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: application
+    
+    - name: Set up Git
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
     
     - name: Deploy to Repository
       env:
