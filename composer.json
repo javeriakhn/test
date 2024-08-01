@@ -3,17 +3,27 @@
     "description": "A brief description of your project",
     "type": "project",
     "require": {
-        "php": ">=7.4.3",
-        "some/package": "^1.0"
+        "php": ">=7.4",  // PHP version requirement
+        "monolog/monolog": "^2.0",  // Example of a package dependency
+        "guzzlehttp/guzzle": "^7.0"  // Another example of a package dependency
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/"  // Adjust namespace and directory as needed
         }
     },
     "scripts": {
         "post-install-cmd": [
             "echo 'Dependencies installed successfully.'"
+        ],
+        "post-update-cmd": [
+            "echo 'Dependencies updated successfully.'"
         ]
-    }
+    },
+    "config": {
+        "optimize-autoloader": true,  // Optimize autoloader for production
+        "preferred-install": "dist"   // Prefer distribution packages for faster installation
+    },
+    "minimum-stability": "stable",  // Minimum stability level for packages
+    "prefer-stable": true           // Prefer stable versions of packages
 }
