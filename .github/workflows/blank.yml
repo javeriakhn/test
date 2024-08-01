@@ -3,8 +3,8 @@ name: Build and Deploy
 on:
   push:
     tags:
-      - '*'  # This will trigger the workflow for any tag push
-  workflow_dispatch:  # Allows manual triggering from the GitHub Actions interface
+      - '*'  # Trigger the workflow for any tag push
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
   build:
@@ -12,28 +12,29 @@ jobs:
     steps:
     - uses: actions/checkout@v2  # Check out the repository code
     
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'  # Set the Java version to match your project requirements
+        distribution: 'adoptopenjdk'
+    
     - name: Build Application
       run: |
-        # Replace this with your actual build command
-        echo "Building the application..."
-        # For example, if using Gradle:
-        # ./gradlew build
-        # Or if using npm:
-        # npm install && npm run build
+        echo "Building the application with Maven..."
+        mvn clean package  # Run Maven to build and package the application
     
     - name: Check Build Directory
       run: |
-        # Check the contents to ensure the build was successful
-        echo "Checking build directory..."
-        ls -la
+        echo "Listing contents of the build directory..."
+        ls -la target  # The default output directory for Maven builds
     
     - name: Package Application
       run: |
         echo "Packaging the application..."
-        if [ -d "build" ]; then
-          tar -czf app.tar.gz build/  # Adjust this path if necessary
+        if [ -d "target" ]; then
+          tar -czf app.tar.gz target/
         else
-          echo "Error: Build directory 'build/' does not exist"
+          echo "Error: Target directory 'target/' does not exist"
           exit 1
         fi
     
