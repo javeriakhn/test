@@ -10,33 +10,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Code
+      uses: actions/checkout@v2
     
-    - name: Set up JDK
-      uses: actions/setup-java@v3
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
       with:
-        java-version: '11'
-        distribution: 'temurin'
+        php-version: '8.0'  # Specify the PHP version you need
     
-    - name: Build Application
+    - name: Install Dependencies
       run: |
-        echo "Building the application with Maven..."
-        mvn clean package
+        echo "Installing PHP dependencies with Composer..."
+        composer install
     
     - name: Check Build Directory
       run: |
         echo "Listing contents of the build directory..."
-        ls -la target
+        ls -la
     
     - name: Package Application
       run: |
         echo "Packaging the application..."
-        if [ -d "target" ]; then
-          tar -czf app.tar.gz target/
-        else
-          echo "Error: Target directory 'target/' does not exist"
-          exit 1
-        fi
+        tar -czf app.tar.gz *  # Adjust the pattern to match your build artifacts if needed
     
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -70,4 +65,5 @@ jobs:
         git add app.tar.gz
         git commit -m "Add new build"
         git push
+
 
