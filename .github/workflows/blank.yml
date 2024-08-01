@@ -3,35 +3,35 @@ name: Build and Deploy
 on:
   push:
     tags:
-      - '*'  # Triggers the workflow for any tag push
-  workflow_dispatch:  # Allows manual triggering of the workflow
+      - '*'  # This will trigger the workflow for any tag push
+  workflow_dispatch:  # Allows manual triggering from the GitHub Actions interface
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2  # Check out the repository code
     
     - name: Build Application
       run: |
-        # Replace with the actual build command
+        # Replace this with your actual build command
         echo "Building the application..."
-        # Example build command:
+        # For example, if using Gradle:
         # ./gradlew build
-        # Make sure it creates the 'build/' directory or adjust the path accordingly
+        # Or if using npm:
+        # npm install && npm run build
     
     - name: Check Build Directory
       run: |
-        # Debugging step to check the contents of the directory
+        # Check the contents to ensure the build was successful
         echo "Checking build directory..."
         ls -la
     
     - name: Package Application
       run: |
-        # Ensure the build directory exists before packaging
         echo "Packaging the application..."
         if [ -d "build" ]; then
-          tar -czf app.tar.gz build/
+          tar -czf app.tar.gz build/  # Adjust this path if necessary
         else
           echo "Error: Build directory 'build/' does not exist"
           exit 1
@@ -57,8 +57,6 @@ jobs:
         TARGET_REPO: ${{ secrets.TARGET_REPO }}
         TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
       run: |
-        # Add the commands to upload the packaged application
-        # For example:
         echo "Deploying the application..."
         git clone https://${{ secrets.TARGET_REPO_TOKEN }}@github.com/${{ secrets.TARGET_REPO }}.git target-repo
         mv app.tar.gz target-repo/
@@ -66,4 +64,3 @@ jobs:
         git add app.tar.gz
         git commit -m "Add new build"
         git push
-
